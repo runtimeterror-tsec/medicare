@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="cardscontainer.css">
+        <title>Dashboard</title>
+    </head>
+    <body style="background-color: #9481e7;
+    background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');">
+        <nav class="navbar navbar-primary bg-light">
+            <a class="navbar-brand" href="images/person.png">
+              <img src="images/person.png" width="30" height="30" class="d-inline-block align-top" alt="">
+              Username
+            </a>
+            <button class="btn btn-primary" onclick="signout()">Sign Out</button>
+
+          </nav>
+
+          <div class="container md-12 ">
+            <div id="loginModal" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-lg" role="content">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h4 class="modal-title">Upload Report</h4>
+                          <button type="button" class="close" id="loginModalClose">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="/patientupload" method="POST" >
+                              <div class="form-row">
+                                  <div class="form-group col-sm-4 ml-3">
+                                          <label class="sr-only" for="fileUpload">Select File</label>
+                                          <input type="text" name="filePath" id="filePath">
+                                          <input type="file" id="fileUpload" name="fileUpload">
+                                  </div>
+                                  
+                              </div>
+                              <div class="form-row col-sm-4">
+                                <button type="Submit" class="btn btn-primary">Submit</button>
+                            </div>
+                            
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      
+              <div class="row md-12 patients-cards cardscontainer" style="margin-top: 200px;">
+                <div class="card md-4 mt-10 align-baseline" style="width: 15rem;">
+                    <img class="card-img-top" src="images/access.jpg" height="200px" alt="Card image cap">
+                    <div class="card-header">
+                        All Doctors
+                      </div>
+                    <div class="card-body">
+                      <button class="btn btn-primary">Give access</button>
+
+                    </div>
+                  </div>
+                  <div class="card md-4 ml-5 mt-10 align-baseline" style="width: 15rem;">
+                    <img class="card-img-top" src="images/doctor.jpg" height="200px" alt="Card image cap">
+                    <div class="card-header">
+                        My Doctors
+                      </div>
+                    <div class="card-body">
+                      <button class="btn btn-primary">View</button>
+                    </div>
+                  </div>
+                  <div class="card md-4 ml-5 mt-10 align-baseline" style="width: 15rem;">
+                    <img class="card-img-top" src="images/documents.jpg" height="200px"  alt="Card image cap">
+                    <div class="card-header">
+                        Upload Documents
+                      </div>
+                    <div class="card-body">
+                      <button class="btn btn-primary" id="loginModalOpen">Upload</button>
+                    </div>
+                  </div>
+                  <div class="card md-4 ml-5 mt-10 align-baseline" style="width: 15rem;">
+                    <img class="card-img-top" src="images/notification.jpg" height="200px"  alt="Card image cap">
+                    <div class="card-header">
+                        Notifications
+                      </div>
+                    <div class="card-body">
+                      <button class="btn btn-primary">View</button>
+                    </div>
+                  </div>
+                  
+              </div>
+          </div>
+    
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+        <script src="firebase.js"></script>
+        <script src="signout.js"></script>
+        <script>
+          // getFilePath();
+           $('#loginModalOpen').click(function() {
+            $('#loginModal').modal('show');
+        });
+
+        $('#loginModalClose').click(function() {
+            $('#loginModal').modal('hide');
+        });
+
+// function getFilePath(){
+//      $('input[type=file]').change(function () {
+//          var filePath=this.files[0].mozFullPath 
+//          document.getElementById("filePath").value = filePath;
+//      });
+// }
+        </script>
+    </body>
+</html>
