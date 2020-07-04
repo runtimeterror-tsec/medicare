@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="cardscontainer.css">
+  <title>Dashboard</title>
+  <style>
+    th,td,table{
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body onload="setName();" style="background-color: #9481e7;
+    background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');">
+  <nav class="navbar navbar-primary bg-light">
+    <a class="navbar-brand" href="images/person.png">
+      <img src="images/person.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <span id="dashEmail"></span>
+    </a>
+    <button class="btn btn-primary" onclick="signout()">Sign Out</button>
+
+  </nav>
+
+  <!-- UPLOAD DOCUMENTS MODAL -->
+  <div class="container md-12 ">
+    <div id="loginModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg" role="content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Upload Report</h4>
+            <button type="button" class="close" id="loginModalClose">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form action="/patientupload" method="POST">
+              <div class="form-row">
+                <div class="form-group col-sm-4 ml-3">
+                  <label class="sr-only" for="fileUpload">Select File</label>
+                  <input type="text" hidden name="loggedinuser" id="loggedinuser">
+                  <input type="text" hidden name="useruid" id="useruid">
+                  <input type="file" id="fileUpload" name="fileUpload">
+                </div>
+
+              </div>
+              <div class="form-row col-sm-4">
+                <button type="Submit" class="btn btn-primary">Submit</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- UPLOAD DOCUMENTS MODAL -->
+
+    <!-- ALL DOCTORS MODAL -->
+    <div class="container md-12 ">
+      <div id="allDoctorsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="content">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">All Doctors</h4>
+              <button type="button" class="close" id="loginModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+              <table id="allDoctorsList">
+                <tbody>
+                  <th>Name</th>
+                  <th class="ml-2">Email</th>
+                      <th class="ml-2">Qualification</th>
+                      <th class="ml-2">Specialization</th>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ALL DOCTORS MODAL -->
+
+      <!-- MY DOCTORS MODAL -->
+      <div class="container md-12 ">
+        <div id="viewMyDoctorsModal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg" role="content">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">My Doctors</h4>
+                <button type="button" class="close" id="loginModalClose">&times;</button>
+              </div>
+              <div class="modal-body">
+                <table id="myDoctorsList">
+                  <thead>
+
+                    <tr>
+
+                      <th>Name</th>
+                      
+
+                    </tr>
+
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MY DOCTORS MODAL -->
+
+        <!-- NOTIFICATIONS MODAL -->
+        <div class="container md-12 ">
+          <div id="patientNotificationsModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg" role="content">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Notifications</h4>
+                  <button type="button" class="close" id="loginModalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <table id="myDoctorsList">
+                    <thead>
+
+                      <tr>
+
+                        <th>Name</th>
+                      </tr>
+
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- NOTIFICATIONS MODAL -->
+
+          <!-- CLAIM INSURANCE MODAL -->
+        <div class="container md-12 ">
+          <div id="insuranceClaimModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg" role="content">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Request To Claim Insurance</h4>
+                  <button type="button" class="close" id="insuranceClaimModalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <table id="allInsuranceList">
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CLAIM INSURANCE MODAL -->
+
+          <div class="row md-12 patients-cards cardscontainer d-flex justify-content-center" style="margin-top: 20px;">
+            <div class="card md-4 mt-10 align-baseline" style="width: 18rem;">
+              <img class="card-img-top" src="images/access.jpg" height="180px" alt="Card image cap">
+              <div class="card-header">
+                All Doctors
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="allDoctorsModalOpen">Give access</button>
+
+              </div>
+            </div>
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 18rem;">
+              <img class="card-img-top" src="images/doctor.jpg" height="180px" alt="Card image cap">
+              <div class="card-header">
+                My Doctors
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="viewMyDoctorsModalOpen">View</button>
+              </div>
+            </div>
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 18rem;">
+              <img class="card-img-top" src="images/documents.jpg" height="180px" alt="Card image cap">
+              <div class="card-header">
+                Upload Documents
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="loginModalOpen">Upload</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row md-12 patients-cards cardscontainer d-flex justify-content-center" style="margin-top: 20px;">
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 18rem;">
+              <img class="card-img-top" src="images/notification.jpg" height="180px" alt="Card image cap">
+              <div class="card-header">
+                Notifications
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="patientNotificationsModalOpen">View</button>
+              </div>
+            </div>
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 18rem;">
+              <img class="card-img-top" src="images/insurance1.jpg" height="180px" alt="Card image cap">
+              <div class="card-header">
+                Claim Insurance
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="insuranceClaimModalOpen">Request</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+        <script src="firebase.js"></script>
+        <script src="signout.js"></script>
+        <script src="viewAllDoctors.js"></script>
+        <script src="viewMyDoctors.js"></script>
+        <script src="viewAllInsurance.js"></script>
+        <script>
+          function setName() {
+            setInterval(() => {
+              document.getElementById("dashEmail").innerHTML = firebase.auth().currentUser.email;
+            }, 1000)
+          }
+          // getFilePath();
+          $('#loginModalOpen').click(function () {
+
+            $('#loginModal').modal('show');
+            document.getElementById("loggedinuser").value = firebase.auth().currentUser.email;
+            document.getElementById('useruid').value = firebase.auth().currentUser.uid;
+
+
+          });
+
+          $('#loginModalClose').click(function () {
+            $('#loginModal').modal('hide');
+          });
+
+          $('#allDoctorsModalOpen').click(function () {
+
+            $('#allDoctorsModal').modal('show');
+            viewAllDoctors();
+          });
+
+          $('#allDoctorsModalClose').click(function () {
+            $('#allDoctorsModal').modal('hide');
+          });
+
+
+          $('#viewMyDoctorsModalOpen').click(function () {
+            $('#viewMyDoctorsModal').modal('show');
+            viewMyDoctors();
+          });
+
+          $('#viewMyDoctorsModalClose').click(function () {
+            $('#viewMyDoctorsModal').modal('hide');
+          });
+
+          $('#patientNotificationsModalOpen').click(function () {
+            $('#patientNotificationsModal').modal('show');
+          });
+
+          $('#patientNotificationsModalClose').click(function () {
+            $('#patientNotificationsModal').modal('hide');
+          });
+          
+          $('#insuranceClaimModalOpen').click(function () {
+            $('#insuranceClaimModal').modal('show');
+            viewAllInsurance();
+          });
+
+          $('#insuranceClaimModalClose').click(function () {
+            $('#insuranceClaimModal').modal('hide');
+          });
+
+        </script>
+</body>
+
+</html>

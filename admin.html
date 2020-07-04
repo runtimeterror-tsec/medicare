@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="cardscontainer.css">
+  <title>Dashboard</title>
+</head>
+
+<body onload="setName();" style="background-color: #9481e7;
+    background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');">
+  <nav class="navbar navbar-primary bg-light">
+    <a class="navbar-brand" href="images/person.png">
+      <img src="images/person.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <span id="dashEmail"></span>
+    </a>
+    <button class="btn btn-primary" onclick="signout()">Sign Out</button>
+
+  </nav>
+
+  <!-- MANAGE PATIENTS MODAL -->
+  <div class="container md-12 ">
+    <div id="patientsModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg" role="content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Manage Patients</h4>
+            <button type="button" class="close" id="patientsModalClose">&times;</button>
+          </div>
+          <div class="modal-body">
+            <table id="allPatientsList">
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MANAGE PATIENTS MODAL -->
+
+    <!-- MANAGE DOCTORS  MODAL -->
+    <div class="container md-12 ">
+      <div id="doctorsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="content">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Manage Doctors</h4>
+              <button type="button" class="close" id="doctorsModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+              <table id="allDoctorsList">
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MANAGE DOCTORS MODAL -->
+
+      <!-- MANAGE INSURANCE MODAL -->
+      <div class="container md-12 ">
+        <div id="insuranceModal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg" role="content">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Manage Insurance Firms</h4>
+                <button type="button" class="close" id="insuranceModalClose">&times;</button>
+              </div>
+              <div class="modal-body">
+                <table id="allInsuranceList">
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MANAGE INSURANCE MODAL -->
+
+        <!-- MANAGE PHARMACY MODAL -->
+        <div class="container md-12 ">
+          <div id="pharmacyModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg" role="content">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Manage Pharmacy Firms</h4>
+                  <button type="button" class="close" id="pharmacyModalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <table id="allMedicalList">
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- MANAGE PHARMACY MODAL -->
+
+           <!-- UPDATE DOCTOR  MODAL -->
+        <div class="container md-12 ">
+          <div id="updateDoctorModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg" role="content">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Doctor</h4>
+                  <button type="button" class="close" id="updateDoctorModalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <table id="updateDoctorList">
+                    <tbody>
+                      <div class="form-group row">
+                        <label for="updateEmail" class="col-md-2 col-form-label">Email</label>
+                        <div class="col-md-10 ml-2">
+                            <input type="email" class="form-control" id="updateEmail" name="updateEmail" placeholder="Email">
+                        </div>
+                    </div>
+                      <div class="form-group row">
+                        <label for="udpateName" class="col-md-2 col-form-label">Name</label>
+                        <div class="col-md-10 ml-2">
+                            <input type="text" class="form-control" id="updateName" name="udpateName" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="updateSpecialization" class="col-md-2 col-form-label">Specialization</label>
+                      <div class="col-md-10 ml-2">
+                          <input type="text" class="form-control" id="updateSpecialization" name="updateSpecialization" placeholder="Specialization">
+                      </div>
+                  </div>
+                <div class="form-group row">
+                  <label for="updateQualification" class="col-md-2 col-form-label">Qualification</label>
+                  <div class="col-md-10 ml-2">
+                      <input type="text" class="form-control" id="updateQualification" name="updateQualification" placeholder="Qualification">
+                  </div>
+              </div>
+              <div class="form-group row">
+                <label for="updateContactNum" class="col-md-4 col-form-label">Contact Number</label>
+                <div class="col-md-8 ml-2">
+                    <input type="tel" class="form-control" id="updateContactNum" name="updateContactNum" placeholder="Contact Number">
+                </div>
+            </div>
+                  <button class="btn btn-primary" id="submitUpdateForm">Update</button>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- UPDATE DOCTOR MODAL -->
+
+          <div class="row md-12 patients-cards cardscontainer" style="margin-top: 200px;">
+            <div class="card md-4 mt-10 align-baseline" style="width: 14rem;">
+              <img class="card-img-top" src="images/patients.png" height="200px" alt="Card image cap">
+              <div class="card-header">
+                Manage Patients
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="patientsModalOpen">Manage</button>
+
+              </div>
+            </div>
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 14rem;">
+              <img class="card-img-top" src="images/doctor.jpg" height="200px" alt="Card image cap">
+              <div class="card-header">
+                Manage Doctors
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="doctorsModalOpen">Manage</button>
+              </div>
+            </div>
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 14rem;">
+              <img class="card-img-top" src="images/documents.jpg" height="200px" alt="Card image cap">
+              <div class="card-header">
+                Manage Insurance Firms
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="insuranceModalOpen">Manage</button>
+              </div>
+            </div>
+            <div class="card md-4 ml-4 mt-10 align-baseline" style="width: 14rem;">
+              <img class="card-img-top" src="images/medical.jpg" height="200px" alt="Card image cap">
+              <div class="card-header">
+                Manage Pharmacy Firms
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" id="pharmacyModalOpen">Manage</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+        <script src="firebase.js"></script>
+        <script src="signout.js"></script>
+        <script src="admin.js"></script>
+        <script>
+
+          function setName() {
+            setInterval(() => {
+              document.getElementById("dashEmail").innerHTML = firebase.auth().currentUser.email;
+            }, 1000)
+          }
+
+          $('#patientsModalOpen').click(function () {
+            $('#patientsModal').modal('show');
+            viewAllPatients();
+          });
+
+          $('#patientsModalClose').click(function () {
+            $('#patientsModal').modal('hide');
+          });
+
+          $('#doctorsModalOpen').click(function () {
+            $('#doctorsModal').modal('show');
+            viewAllDoctors();
+          });
+
+          $('#doctorsModalClose').click(function () {
+            $('#doctorsModal').modal('hide');
+          });
+
+
+          $('#insuranceModalOpen').click(function () {
+            $('#insuranceModal').modal('show');
+            viewAllInsurance();
+          });
+
+          $('#insuranceModalClose').click(function () {
+            $('#insuranceModal').modal('hide');
+          });
+
+          $('#pharmacyModalOpen').click(function () {
+            $('#pharmacyModal').modal('show');
+            viewAllMedical();
+          });
+
+          $('#pharmacyModalClose').click(function () {
+            $('#pharmacyModal').modal('hide');
+          });
+
+        </script>
+</body>
+
+</html>

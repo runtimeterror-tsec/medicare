@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="cardscontainer.css">
+  <title>Dashboard</title>
+</head>
+
+<body onload="numberOfNotifications()" style="background-color: #9481e7;
+    background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');">
+  <nav class="navbar navbar-primary bg-light">
+    <a class="navbar-brand" href="images/person.png">
+      <img src="images/person.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <span id="dashEmail"></span>
+    </a>
+    <button class="btn btn-primary" onclick="signout()">Sign Out</button>
+
+  </nav>
+
+  <div class="container md-12 ">
+
+    <!-- VIEW PATIENTS MODAL -->
+    <div class="container md-12 ">
+      <div id="viewPatientsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="content">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">View Patients</h4>
+              <button type="button" class="close" id="loginModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+              <table id="listOfPatients">
+                <thead>
+
+                  <tr>
+                  </tr>
+
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW PATIENTS MODAL -->
+
+      <!-- NOTIFICATIONS MODAL -->
+      <div class="container md-12 ">
+        <div id="doctorNotifications" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg" role="content">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Notifications</h4>
+                <button type="button" class="close" id="loginModalClose">&times;</button>
+              </div>
+              <div class="modal-body">
+                <table id="doctorNotificationsList">
+                  <thead>
+
+                    <tr>
+                    </tr>
+
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS MODAL -->
+
+
+        <!-- UPLOAD DOCUMENTS MODAL -->
+  <div class="container md-12 ">
+    <div id="loginModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg" role="content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Upload Report</h4>
+            <button type="button" class="close" id="loginModalClose">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form action="/doctorupload" method="POST">
+              <div class="form-row">
+                <div class="form-group col-sm-4 ml-3">
+                  <label class="sr-only" for="fileUpload">Select File</label>
+                  <input type="text" hidden name="loggedinuser" id="loggedinuser">
+                  <input type="text" hidden name="patientuid" id="patientuid">
+                  <input type="text" hidden name="patientEmail" id="patientEmail">
+                  <input type="file" id="fileUpload" name="fileUpload">
+                </div>
+
+              </div>
+              <div class="form-row col-sm-4">
+                <button type="Submit" class="btn btn-primary">Submit</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- UPLOAD DOCUMENTS MODAL -->
+
+        <div class="row md-12 patients-cards cardscontainer" style="margin-top: 200px;">
+          <div class="card ml-auto md-4 mt-10 align-baseline" style="width: 18rem;">
+            <img class="card-img-top" src="images/doctor.jpg" height="200px" alt="Card image cap">
+            <div class="card-header">
+              View Patients
+            </div>
+            <div class="card-body">
+              <button class="btn btn-primary" id="viewPatientsModalOpen">View</button>
+
+            </div>
+          </div>
+          <div class="card mr-auto md-4 ml-5 mt-10 align-baseline" style="width: 18rem;">
+            <img class="card-img-top" src="images/notification.jpg" height="200px" alt="Card image cap">
+            <div class="card-header">
+              Notifications <img src='' id="notificationNumber">
+            </div>
+            <div class="card-body">
+
+              <button class="btn btn-primary" id="doctorNotificationsOpen">View</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+      </script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+      </script>
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+      <script src="firebase.js"></script>
+      <script src="signout.js"></script>
+      <script src="doctorNotifications.js"></script>
+      <script src="viewPatients.js"></script>
+      <script>
+        setName();
+
+        function setName() {
+          setInterval(() => {
+            document.getElementById("dashEmail").innerHTML = firebase.auth().currentUser.email;
+          }, 1000)
+        }
+
+        function numberOfNotifications() {
+          setTimeout(() => {
+            var loggedinuser = firebase.auth().currentUser.email;
+            console.log(loggedinuser);
+            firebase.database().ref('Users/' + firebase.auth().currentUser.uid).child('Notifications').once("value")
+              .then(function (snapshot) {
+                var numberOfNotificationss = snapshot.numChildren();
+                console.log(numberOfNotificationss);
+                $("#notificationNumber").attr('src', 'https://img.icons8.com/color/48/000000/' +
+                  numberOfNotificationss + '-c.png');
+                $("#notificationNumber").attr('height', '30px');
+                $("#notificationNumber").attr('width', '30px');
+
+
+              });
+          }, 2000);
+
+
+        }
+        $('#doctorNotificationsOpen').click(function () {
+
+          $('#doctorNotifications').modal('show');
+          doctorNotifications();
+        });
+
+        $('#doctorNotificationsClose').click(function () {
+          $('#doctorNotifications').modal('hide');
+        });
+
+        $('#viewPatientsModalOpen').click(function () {
+          $('#viewPatientsModal').modal('show');
+          viewPatients();
+        });
+
+        $('#viewPatientsModalClose').click(function () {
+          $('#viewPatientsModal').modal('hide');
+        });
+
+
+      </script>
+</body>
+
+</html>
