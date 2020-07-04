@@ -24,7 +24,7 @@ var appp = firebase.initializeApp({
 });
 const NodeRSA = require('node-rsa');
 const key = new NodeRSA({
-  b: 512
+  b: 1024
 });
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {
   protocol: 'https'
@@ -91,6 +91,8 @@ app.get('/fileMerged/:sender/:useruid', async function(req, res) {
     const validCID = hash.toString();
     console.log("File Uploaded Successfully: " + hash);
     const data = new Uint8Array(Buffer.from(hash));
+
+   
 
     firebase.database().ref('Users').orderByChild('Email').equalTo(userEmail).once('value').then(function (snapshot) {
       if (snapshot) {
@@ -176,7 +178,24 @@ app.get('/view_report/:sender', function(req, res) {
     var returndata;
     var sendrequest = request(options)
       .then(function (parsedBody) {
-        console.log(parsedBody); // parsedBody contains the data sent back from the Flask server
+        // var private_key = NodeRSA(parsedBody.fieUrl);
+
+        console.log("fileUrl" + parsedBody.fileUrl);
+        var userData = [];
+        console.log(req.params.sender);
+    firebase.database().ref('Users/').orderByChild('Email').equalTo(req.params.sender).once('value').then(function(snapshot) {
+      snapshot.forEach(function(userSnapshot) {
+        userSnapshot.forEach(function(userSnapshott){
+          userData.push(userSnapshott.val());
+        })
+        console.log(userData);
+      var private_key = userData[2];
+      console.log("Private Key" + private_key);
+      let key_private = new NodeRSA(private_key);
+      var decrypted_string = key_private.decrypt(parsedBody.fileUrl, 'utf8');
+      console.log(decrypted_string); 
+      res.redirect('https://gateway.ipfs.io/ipfs/' + decrypted_string);
+      // parsedBody contains the data sent back from the Flask server
         returndata = parsedBody; // do something with this data, here I'm assigning it to a variable.
       })
       .catch(function (err) {
@@ -188,9 +207,11 @@ app.get('/view_report/:sender', function(req, res) {
     res.redirect("/patient");
 
   }, 500)
+      })
+      
 
 })
-
+});
 app.get('/revoke_doctor/:doctor/:sender', function(req, res){
   setTimeout(() => {
     var data = { // this variable contains the data you want to send
@@ -267,37 +288,37 @@ app.get("/encrypter", function (req, res) {
 
 
 
-// app.post("/", function (req, res) {
-//   console.log(req.body.emailfield)
-//   const text = req.body.emailfield;
-//   const encrypted = key.encrypt(text, 'base64');
-//   console.log('encrypted: ', encrypted);
-//   console.log('Key: '  +  key)
+app.post("/", function (req, res) {
+  console.log(req.body.emailfield)
+  const text = req.body.emailfield;
+  const encrypted = key.encrypt(text, 'base64');
+  console.log('encrypted: ', encrypted);
+  console.log('Key: '  +  key)
 
-//   setInterval(() => {
-//     firebase.database().ref('Users').orderByChild('Email').equalTo(req.body.emailfield).once('value').then(function (snapshot) {
-//       if (snapshot) {
-//         snapshot.forEach(function (userSnapshot) {
-//           var email = userSnapshot.val().Email;
-//           var Key = userSnapshot.key;
-//           // var user = firebase.auth().getUser(key);
-//           var ref = firebase.database().ref(
-//             "Users/".concat(Key, "/")
-//           );
-//           ref.update({
-//             "Public Key": key.exportKey('public'),
-//             "Private Key" : key.exportKey('private')
-//           });
-//         })
-//       } else {
-//         console.log("No snapshout found");
-//       }
+  setInterval(() => {
+    firebase.database().ref('Users').orderByChild('Email').equalTo(req.body.emailfield).once('value').then(function (snapshot) {
+      if (snapshot) {
+        snapshot.forEach(function (userSnapshot) {
+          var email = userSnapshot.val().Email;
+          var Key = userSnapshot.key;
+          // var user = firebase.auth().getUser(key);
+          var ref = firebase.database().ref(
+            "Users/".concat(Key, "/")
+          );
+          ref.update({
+            "Public Key": key.exportKey('public'),
+            "Private Key" : key.exportKey('private')
+          });
+        })
+      } else {
+        console.log("No snapshout found");
+      }
 
 
-//     });
-//   }, 1000)
+    });
+  }, 1000)
 
-// })
+})
 
 
 
@@ -316,74 +337,86 @@ app.post("/patientupload", function (req, res) {
     const validCID = hash.toString();
     console.log("File Uploaded Successfully: " + hash);
     const data = new Uint8Array(Buffer.from(hash));
+    var userData = [];
+    firebase.database().ref('Users/' + useruid).once('value').then(function(snapshot) {
+      snapshot.forEach(function(userSnapshot) {
+        userData.push(userSnapshot.val());
+      })
+      var public_key = userData[3];
+      let key_public = new NodeRSA(public_key);
+      var encrypted_string = key_public.encrypt(hash, 'base64');
+      console.log(encrypted_string);
 
-    firebase.database().ref('Users').orderByChild('Email').equalTo(userEmail).once('value').then(function (snapshot) {
-      if (snapshot) {
-        snapshot.forEach(function (userSnapshot) {
-          setTimeout(() => {
-            var loggedinuser = userEmail;
-            console.log(loggedinuser);
-            firebase.database().ref('Users/' + useruid).child('fileHash').once("value")
-              .then(function (snapshot) {
-                var numberOfNotificationss = snapshot.numChildren();
-                var key = userSnapshot.key;
-
-                var ref = firebase.database().ref(
-                  "Users/".concat(key, "/fileHash")
-                );
-                ref.update({
-                  [numberOfNotificationss]: hash
-                });
-
-
-              });
-          }, 2000);
-
-
+      firebase.database().ref('Users').orderByChild('Email').equalTo(userEmail).once('value').then(function (snapshot) {
+            if (snapshot) {
+              snapshot.forEach(function (userSnapshot) {
+                setTimeout(() => {
+                  var loggedinuser = userEmail;
+                  console.log(loggedinuser);
+                  firebase.database().ref('Users/' + useruid).child('fileHash').once("value")
+                    .then(function (snapshot) {
+                      var numberOfNotificationss = snapshot.numChildren();
+                      var key = userSnapshot.key;
+      
+                      var ref = firebase.database().ref(
+                        "Users/".concat(key, "/fileHash")
+                      );
+                      ref.update({
+                        [numberOfNotificationss]: encrypted_string
+                      });
+      
+      
+                    });
+                }, 2000);
+      
+      
+              })
+              setTimeout(() => {
+                var data = { // this variable contains the data you want to send
+                  sender: userEmail,
+                  data: encrypted_string,
+                }
+                var options = {
+                  method: 'POST',
+                  uri: baseUrl + 'add_transaction',
+                  body: data,
+                  json: true // Automatically stringifies the body to JSON
+                };
+      
+                var returndata;
+                var sendrequest = request(options)
+                  .then(function (parsedBody) {
+                    console.log(parsedBody); // parsedBody contains the data sent back from the Flask server
+                    returndata = parsedBody; // do something with this data, here I'm assigning it to a variable.
+                  })
+                  .catch(function (err) {
+                    console.log(err);
+                  });
+      
+                console.log(returndata);
+      
+                res.redirect("/patient");
+      
+              }, 500)
+      
+            }
+          });
+      
+      
+      
+        //   // ipfs.files.get(validCID, function (err, files) {
+        //   //     files.forEach((file) => {
+        //   //       console.log("Decrypted" + file.content.toString('utf8'));
+        //   //       // console.log(file.path)
+        //   //       // console.log(file.content.toString('utf8'))
+        //   //     })
+        //   //   })
+      
+      
         })
-        setTimeout(() => {
-          var data = { // this variable contains the data you want to send
-            sender: userEmail,
-            data: hash,
-          }
-          var options = {
-            method: 'POST',
-            uri: baseUrl + 'add_transaction',
-            body: data,
-            json: true // Automatically stringifies the body to JSON
-          };
+    })
 
-          var returndata;
-          var sendrequest = request(options)
-            .then(function (parsedBody) {
-              console.log(parsedBody); // parsedBody contains the data sent back from the Flask server
-              returndata = parsedBody; // do something with this data, here I'm assigning it to a variable.
-            })
-            .catch(function (err) {
-              console.log(err);
-            });
-
-          console.log(returndata);
-
-          res.redirect("/patient");
-
-        }, 500)
-
-      }
-    });
-
-
-
-    // ipfs.files.get(validCID, function (err, files) {
-    //     files.forEach((file) => {
-    //       console.log("Decrypted" + file.content.toString('utf8'));
-    //       // console.log(file.path)
-    //       // console.log(file.content.toString('utf8'))
-    //     })
-    //   })
-
-
-  })
+  
 
 })
 
