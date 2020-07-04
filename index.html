@@ -13,6 +13,7 @@
 	<div class="signup">
 		<h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
 		<div class="form-holder">
+			<form method="POST" action='/'>
 			<input type="text" class="input" id="name" placeholder="Name" />
 			<input type="email" name="emailfield" id="emailfield" class="input" placeholder="Email" />
 			<input type="password"id="passwordfield" class="input" placeholder="Password" />
@@ -25,7 +26,8 @@
 			<input type="radio" id="pharmacy" name="usertype" value="pharmacy">
 			<label for="Pharmacy">Pharmacy</label><br>
 		</div>
-		<button class="submit-btn" onclick="usersignup()">Sign up</button>
+		<button type="Submit" class="submit-btn" onclick="usersignup()">Sign up</button>
+	</form>
 
 	</div>
 	<div class="login slide-up">
