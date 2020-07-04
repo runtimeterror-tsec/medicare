@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="cardscontainer.css">
+  <title>Dashboard</title>
+</head>
+
+<body style="background-color: #9481e7;
+    background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');">
+  <nav class="navbar navbar-primary bg-light">
+    <a class="navbar-brand" href="images/person.png">
+      <img src="images/person.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <span id="dashEmail"></span>
+    </a>
+    <button class="btn btn-primary" onclick="signout()">Sign Out</button>
+
+  </nav>
+
+  <div class="container md-12 ">
+
+    <!-- NOTIFICATIONS MODAL -->
+    <div class="container md-12 ">
+      <div id="insuranceNotificationsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="content">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Notifications</h4>
+              <button type="button" class="close" id="insuranceNotificationsModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+              <table id="insuranceNotificationsList">
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS MODAL -->
+
+       <!-- NOTIFICATIONS MODAL -->
+    <div class="container md-12 ">
+      <div id="viewClaimsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="content">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Orders</h4>
+              <button type="button" class="close" id="viewClaimsModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+              <table id="viewClaimsList">
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS MODAL -->
+
+      <div class="row md-12 patients-cards cardscontainer" style="margin-top: 200px;">
+        <div class="card ml-auto md-4 mt-10 align-baseline" style="width: 18rem;">
+          <img class="card-img-top" src="images/insurance.jpg" height="200px" alt="Card image cap">
+          <div class="card-header">
+            View Orders
+          </div>
+          <div class="card-body">
+            <button class="btn btn-primary" id="viewClaimsModalOpen">View</button>
+          </div>
+        </div>
+
+        <div class="card mr-auto md-4 ml-5 mt-10 align-baseline" style="width: 18rem;">
+          <img class="card-img-top" src="images/notification.jpg" height="200px" alt="Card image cap">
+          <div class="card-header">
+            Notifications
+          </div>
+          <div class="card-body">
+
+            <button class="btn btn-primary" id="insuranceNotificationsModalOpen">View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="firebase.js"></script>
+    <script src="signout.js"></script>
+    <script src="pharmacyNotifications.js"></script>
+    <script src="viewOrders.js"></script>
+
+      <script>
+        setName();
+
+        function setName() {
+          setInterval(() => {
+            document.getElementById("dashEmail").innerHTML = firebase.auth().currentUser.email;
+          }, 1000)
+        }
+
+        // function numberOfNotifications() {
+        //   setTimeout(() => {
+        //     var loggedinuser = firebase.auth().currentUser.email;
+        //     console.log(loggedinuser);
+        //     firebase.database().ref('Users/' + firebase.auth().currentUser.uid).child('Notifications').once("value")
+        //       .then(function (snapshot) {
+        //         var numberOfNotificationss = snapshot.numChildren();
+        //         console.log(numberOfNotificationss);
+        //         $("#notificationNumber").attr('src', 'https://img.icons8.com/color/48/000000/' +
+        //           numberOfNotificationss + '-c.png');
+        //         $("#notificationNumber").attr('height', '30px');
+        //         $("#notificationNumber").attr('width', '30px');
+
+
+        //       });
+        //   }, 2000);
+
+
+        // }
+        $('#insuranceNotificationsModalOpen').click(function () {
+
+$('#insuranceNotificationsModal').modal('show');
+insuranceNotifications();
+});
+
+$('#doctorNotificationsClose').click(function () {
+$('#insuranceNotificationsModal').modal('hide');
+});
+
+$('#viewClaimsModalOpen').click(function () {
+
+$('#viewClaimsModal').modal('show');
+viewOrders()
+});
+
+$('#viewClaimsModalClose').click(function () {
+$('#viewClaimsModal').modal('hide');
+});
+
+
+      </script>
+</body>
+
+</html>
