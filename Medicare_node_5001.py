@@ -269,7 +269,7 @@ def fetchpatient():
     if data =="":
         response = {'message': f'No file to fetch'}
     else:
-        response = {'message': f'File fetched'}
+        response = {'message': f'File fetched', 'fileUrl': data}
     print(data)
     return jsonify(response), 200
 

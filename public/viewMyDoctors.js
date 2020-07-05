@@ -39,7 +39,7 @@ function viewMyDoctors(){
             $.each(myDoctorsArray, function(){
                 var email = myDoctorsArray[i];
                 console.log(email);
-                rows += "<tr><td>" + email + "</td><td><button class='btn btn-primary'>Fetch Report</button></td><td><button class='btn btn-danger' onclick='getRevokeDoctorEmail("+(i+1)+")'>Revoke Access</button></td></tr>"
+                rows += "<tr><td>" + email + "</td><td><button class='btn btn-danger' onclick='getRevokeDoctorEmail("+(i+1)+")'>Revoke Access</button></td></tr>"
                 i = i + 1;
             });
             $("#myDoctorsList tbody").empty();

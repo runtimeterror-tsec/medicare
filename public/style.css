@@ -96,6 +96,7 @@ html, body {
   width: 100%;
   font-size: 12px;
 }
+
 .inputt{
   box-shadow: none;
   height: 30px;
@@ -245,4 +246,7 @@ html, body {
   opacity: 1;
   visibility: visible;
   -webkit-transition: all .3s ease;
+}
+.form-label{
+  font-size: 12px;
 }

@@ -151,6 +151,11 @@ app.get('/fileMerged/:sender/:useruid', async function(req, res) {
 
           console.log(returndata);
 
+          fs.unlinkSync('file1.pdf');
+          fs.unlinkSync('file2.pdf');
+          fs.unlinkSync('merged.pdf');
+
+
           res.redirect("/patient");
 
         }, 500)
@@ -177,7 +182,9 @@ app.get('/view_report/:sender', function(req, res) {
     var sendrequest = request(options)
       .then(function (parsedBody) {
         console.log(parsedBody); // parsedBody contains the data sent back from the Flask server
-        returndata = parsedBody; // do something with this data, here I'm assigning it to a variable.
+        returndata = parsedBody;
+        res.redirect('https://gateway.ipfs.io/ipfs/' + parsedBody.fileUrl);
+        // do something with this data, here I'm assigning it to a variable.
       })
       .catch(function (err) {
         console.log(err);
@@ -185,7 +192,7 @@ app.get('/view_report/:sender', function(req, res) {
 
     console.log(returndata);
 
-    res.redirect("/patient");
+    // res.redirect("/patient");
 
   }, 500)
 

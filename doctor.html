@@ -56,7 +56,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title">Notifications</h4>
-                <button type="button" class="close" id="loginModalClose">&times;</button>
+                <button type="button" class="close" id="doctorNotificationsClose">Clear Notifications</button>
               </div>
               <div class="modal-body">
                 <table id="doctorNotificationsList">
@@ -149,6 +149,7 @@
       <script src="signout.js"></script>
       <script src="doctorNotifications.js"></script>
       <script src="viewPatients.js"></script>
+      <script src="clearNotifications.js"></script>
       <script>
         setName();
 
@@ -173,7 +174,7 @@
 
 
               });
-          }, 2000);
+          }, 500);
 
 
         }
@@ -185,6 +186,8 @@
 
         $('#doctorNotificationsClose').click(function () {
           $('#doctorNotifications').modal('hide');
+          clearNotifications();
+          numberOfNotifications()
         });
 
         $('#viewPatientsModalOpen').click(function () {

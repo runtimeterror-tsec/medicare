@@ -11,7 +11,7 @@ function viewPatients() {
             var patientEmail = patientsArray[i].val();
 
             console.log(patientEmail);
-            rows += "<tr><td>" + patientEmail + "</td><td><button class='btn btn-primary ml-3' onclick='getReport(" + (i + 1) + ")'>View Report</button></td><td><button id='loginModalOpen' onclick='updateReport(" + (i + 1) + ")' class='btn btn-primary ml-3'>Update Report</button></td><td><input id='fileid' name='fileid' type='file' hidden /></td></tr>";
+            rows += "<tr><td>" + patientEmail + "</td><td><button id='loginModalOpen' onclick='updateReport(" + (i + 1) + ")' class='btn btn-primary ml-3'>Update Report</button></td><td><input id='fileid' name='fileid' type='file' hidden /></td></tr>";
             i = i + 1;
         });
         $("#listOfPatients tbody").empty();
@@ -21,9 +21,9 @@ function viewPatients() {
 
     });
 }
-// $('updateReport').click(function () {
-//     fileupload.click();
-// });
+$('updateReport').click(function () {
+    fileupload.click();
+});
 // document.getElementById('buttonid').addEventListener('click', openDialog);
 
 // $(document).ready(function(){
@@ -48,19 +48,19 @@ function openDialog() {
     });
 }
 
-function getReport(i) {
-    table = document.getElementById("listOfPatients");
-    tr = table.getElementsByTagName("tr");
-    td = tr[i].getElementsByTagName("td")[0];
-    clickedPatient = td.textContent || td.innerText;
-    console.log(clickedPatient);
+// function getReport(i) {
+//     table = document.getElementById("listOfPatients");
+//     tr = table.getElementsByTagName("tr");
+//     td = tr[i].getElementsByTagName("td")[0];
+//     clickedPatient = td.textContent || td.innerText;
+//     console.log(clickedPatient);
 
 
 
-    window.location.href = '/fetch/' + clickedPatient + '/' + firebase.auth().currentUser.email;
+//     window.location.href = '/fetch/' + clickedPatient + '/' + firebase.auth().currentUser.email;
 
 
-}
+// }
 
 function updateReport(i) {
 

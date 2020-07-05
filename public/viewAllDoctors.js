@@ -19,7 +19,7 @@ function viewAllDoctors(){
             $.each(doctorsArray, function(){
                 var email = doctorsArray[i].val().Email;
                 console.log(email);
-                rows += "<tr><td>" + doctorsArray[i].val().Name + "</td><td class='ml-2'>" + doctorsArray[i].val().Email +"</td><td class='ml-2'>" + doctorsArray[i].val().Qualification + "</td><td class='ml-2'>" + doctorsArray[i].val().Specialization + "</td><td class='ml-2'><button class='btn btn-primary ml-3' onclick='getDoctorEmail("+(i+1)+")'>Give Access</button></td></tr>";
+                rows += "<tr><td>" + doctorsArray[i].val().Name + "</td><td class='ml-2'>" + doctorsArray[i].val().Email +"</td><td class='ml-2'>" + doctorsArray[i].val().Qualification + "</td><td class='ml-2'>" + doctorsArray[i].val().Specialization + "</td><td class='ml-2'><button class='btn btn-primary ml-3' onclick='getDoctorEmail("+(i)+")'>Give Access</button></td></tr>";
                 i = i + 1;
             });
             $("#allDoctorsList tbody").empty();

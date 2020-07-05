@@ -13,10 +13,15 @@
     table {
       padding: 10px;
     }
+    .container{
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    
   </style>
 </head>
 
-<body onload="setName();" style="background-color: #9481e7;
+<body onload="numberOfNotifications()" style="background-color: #9481e7;
     background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');">
   <nav class="navbar navbar-primary bg-light">
     <a class="navbar-brand" href="images/person.png">
@@ -119,7 +124,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h4 class="modal-title">Notifications</h4>
-                  <button type="button" class="close" id="loginModalClose">&times;</button>
+                  <button type="button" class="close" id="patientNotificationsModalClose">Clear Notifications</button>
                 </div>
                 <div class="modal-body">
                   <table id="patientNotificationsList">
@@ -171,7 +176,7 @@
                 </div>
               </div>
               <!-- ORDER MEDICINE MODAL -->
-              <div class="row md-12 patients-cards cardscontainer d-flex justify-content-center"
+              <div class="row md-12 patients-cards cardscontainer d-flex justify-content-between"
                 style="margin-top: 20px;">
                 <div class="card md-4 mt-10 align-baseline" style="width: 18rem;">
                   <img class="card-img-top" src="images/access.jpg" height="180px" alt="Card image cap">
@@ -203,18 +208,18 @@
                 </div>
               </div>
 
-              <div class="row md-12 patients-cards cardscontainer d-flex justify-content-center"
+              <div class="row md-12 patients-cards cardscontainer d-flex justify-content-between"
                 style="margin-top: 20px;">
-                <div class="card md-4 ml-3 mt-10 align-baseline" style="width: 18rem;">
+                <div class="card md-4 mt-10 align-baseline" style="width: 18rem;">
                   <img class="card-img-top" src="images/notification.jpg" height="180px" alt="Card image cap">
                   <div class="card-header">
-                    Notifications
+                    Notifications <img src = '' id="notificationNumber" />
                   </div>
                   <div class="card-body">
                     <button class="btn btn-primary" id="patientNotificationsModalOpen">View</button>
                   </div>
                 </div>
-                <div class="card md-3 ml-3 mt-10 align-baseline" style="width: 18rem;">
+                <div class="card md-3 ml-4 mt-10 align-baseline" style="width: 18rem;">
                   <img class="card-img-top" src="images/insurance1.jpg" height="180px" alt="Card image cap">
                   <div class="card-header">
                     Claim Insurance
@@ -223,26 +228,30 @@
                     <button class="btn btn-primary" id="insuranceClaimModalOpen">Request</button>
                   </div>
                 </div>
-              </div>
-              <div class="card md-3 ml-3 mt-10 align-baseline" style="width: 18rem;">
-                <img class="card-img-top" src="images/insurance1.jpg" height="180px" alt="Card image cap">
-                <div class="card-header">
-                  View Report
-                </div>
-                <div class="card-body">
-                  <button class="btn btn-primary" onclick="viewReport()">View</button>
+                <div class="card md-3 ml-4 mt-10 align-baseline" style="width: 18rem;">
+                  <img class="card-img-top" src="images/report.png" height="180px" alt="Card image cap">
+                  <div class="card-header">
+                    View Report
+                  </div>
+                  <div class="card-body">
+                    <button class="btn btn-primary" onclick="viewMergedReport()">View</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card md-3 ml-3 mt-10 align-baseline" style="width: 18rem;">
-            <img class="card-img-top" src="images/insurance1.jpg" height="180px" alt="Card image cap">
+              </div>
+              
+              <div class="row md-12 patients-cards cardscontainer d-flex justify-content-center" style="width: 18rem;margin-top: 20px;">
+
+          <div class="card row md-3 mt-10 align-baseline special" style="width: 18rem;">
+            <img class="card-img-top" src="images/medicines.jpg" height="180px" alt="Card image cap">
             <div class="card-header">
               Order Medicines
             </div>
             <div class="card-body">
               <button class="btn btn-primary" id="medicineOrderModalOpen">Request</button>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -264,11 +273,25 @@
       <script src="viewAllInsurance.js"></script>
       <script src="viewPharmacy.js"></script>
       <script src="patientNotifications.js"></script>
+      <script src="clearNotifications.js"></script>
       <script>
-        function setName() {
-          setInterval(() => {
+        function numberOfNotifications() {
+          setTimeout(() => {
             document.getElementById("dashEmail").innerHTML = firebase.auth().currentUser.email;
-          }, 1000)
+            var loggedinuser = firebase.auth().currentUser.email;
+            console.log(loggedinuser);
+            firebase.database().ref('Users/' + firebase.auth().currentUser.uid).child('Notifications').once("value")
+              .then(function (snapshot) {
+                var numberOfNotificationss = snapshot.numChildren();
+                console.log(numberOfNotificationss);
+                $("#notificationNumber").attr('src', 'https://img.icons8.com/color/48/000000/' +
+                  numberOfNotificationss + '-c.png');
+                $("#notificationNumber").attr('height', '30px');
+                $("#notificationNumber").attr('width', '30px');
+
+
+              });
+          }, 500);
         }
         // getFilePath();
         $('#loginModalOpen').click(function () {
@@ -311,6 +334,8 @@
 
         $('#patientNotificationsModalClose').click(function () {
           $('#patientNotificationsModal').modal('hide');
+          clearNotifications();
+          numberOfNotifications();
         });
 
         $('#insuranceClaimModalOpen').click(function () {
@@ -331,8 +356,9 @@
           $('#medicineOrderModal').modal('hide');
         });
 
-        function viewReport() {
-          window.location.href = '/view_report/:' + firebase.auth().currentUser.email;
+        function viewMergedReport() {
+          console.log("Here");
+          window.location.href = '/view_report/' + firebase.auth().currentUser.email;
         }
       </script>
 </body>

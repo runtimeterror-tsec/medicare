@@ -15,7 +15,8 @@ function patientNotifications() {
             var i = 0; 
             $.each(patientNotificationsArray, function(){
                 var notification = patientNotificationsArray[i].val();
-                rows += "<tr><td>" + notification + "</td><td><button class='btn btn-primary' onclick='viewReport("+(i+1)+")'>View</button></td><td><button class='btn btn-primary' onclick='acceptReport("+(i+1)+")'>Accept</button></td><td><button class='btn btn-primary'>Reject</button></td></tr>";
+                console.log(notification);
+                rows += "<tr><td>" + notification + "</td><td><button class='btn btn-primary' onclick='viewUpdatedReport("+(i)+")'>View</button></td><td><button class='btn btn-primary' onclick='acceptReport("+(i)+")'>Accept</button></td><td><button class='btn btn-primary'>Reject</button></td></tr>";
                 i = i + 1;
             });
             $("#patientNotificationsList tbody").empty();
@@ -25,16 +26,20 @@ function patientNotifications() {
     }) ;
 }
 
-function viewReport(i){
-    // table = document.getElementById("patientNotificationsList");
-    // tr = table.getElementsByTagName("tr");
-    // td = tr[i].getElementsByTagName("td")[1];
-    // doctorEmail = td.textContent || td.innerText;
+function viewUpdatedReport(i){
+    console.log("Here");
+    table = document.getElementById("patientNotificationsList");
+    tr = table.getElementsByTagName("tr");
+    td = tr[i].getElementsByTagName("td")[0];
+    doctorEmail = td.textContent || td.innerText;
+    console.log(doctorEmail);
     firebase.database().ref('Users/' + firebase.auth().currentUser.uid).child('fileHash').once("value")
     .then(function(snapshot) {
+        console.log("Number of fileHash" + snapshot.numChildren())
       var lastFileHash = (snapshot.numChildren()) - 1;
-      console.log(lastFileHash);
+      console.log("Last file Hash" + lastFileHash);
       var updatedFile = snapshot.val()[lastFileHash] ;
+      console.log("Updated file Url: " + updatedFile);
       location.href = 'https://gateway.ipfs.io/ipfs/' + updatedFile;
     //   var key = userSnapshot.key;
     //   console.log(snapshot.lastFileHash);
