@@ -7,7 +7,9 @@ from uuid import uuid4
 from urllib.parse import urlparse
 
 class Blockchain:
-
+    
+    grant = {}
+    
     def __init__(self):
         self.chain = []
         self.transactions = []
@@ -58,10 +60,10 @@ class Blockchain:
             block_index += 1
         return True
     
-    def add_transaction(self, sender, receiver, amount):
+    def add_transaction(self, sender, version, data):
         self.transactions.append({'sender': sender,
-                                  'receiver': receiver,
-                                  'amount': amount})
+                                  'version': version,
+                                  'data': data})
         previous_block = self.get_previous_block()
         return previous_block['index'] + 1
     
@@ -85,6 +87,56 @@ class Blockchain:
             self.chain = longest_chain
             return True
         return False
+    
+    def fetch(self, sender, doctor, version):
+        #replace_chain()
+        flag = 0
+        if doctor in blockchain.grant[sender]:
+            block_index = 1
+            chain = blockchain.chain
+            while block_index < len(chain):
+                block = chain[block_index]
+                #print(block)
+                trans = block["transactions"]
+                #print(trans)
+                for t in trans:
+                    if t['version']==version:
+                        flag = 1
+                        #print(t['data'])
+                        return t['data']
+                        break
+                if flag == 1:
+                    break
+                
+                block_index +=1
+        else:
+            return ""
+		
+    def fetchpatient(self, sender, version):
+        #replace_chain()
+        flag = 0
+        if version>=1:
+            block_index = 1
+            chain = blockchain.chain
+            while block_index <= len(chain):
+                block = chain[block_index]
+                #print(block)
+                trans = block["transactions"]
+                #print(trans)
+                for t in trans:
+                    if t['version']==version:
+                        flag = 1
+                        #print(t['data'])
+                        return t['data']
+                        break
+                if flag == 1:
+                    break
+                
+                block_index +=1
+        else:
+            return ""
+        
+
 
 app = Flask(__name__)
 
@@ -98,7 +150,7 @@ def mine_block():
     previous_proof = previous_block['proof']
     proof = blockchain.proof_of_work(previous_proof)
     previous_hash = blockchain.hash(previous_block)
-    blockchain.add_transaction(sender = node_address, receiver = 'Sandesh', amount = 1)
+    #blockchain.add_transaction(sender = node_address, receiver = 'Gautam', amount = 1)
     block = blockchain.create_block(proof, previous_hash)
     response = {'message': 'Congratulations, you just mined a block!',
                 'index': block['index'],
@@ -126,10 +178,18 @@ def is_valid():
 @app.route('/add_transaction', methods = ['POST'])
 def add_transaction():
     json = request.get_json()
-    transaction_keys = ['sender', 'receiver', 'amount']
+    transaction_keys = ['sender', 'data']
     if not all(key in json for key in transaction_keys):
         return 'Some elements of the transaction are missing', 400
-    index = blockchain.add_transaction(json['sender'], json['receiver'], json['amount'])
+    key = json['sender'] 
+    print(list(blockchain.grant.keys()))
+    if key in blockchain.grant.keys(): 
+        blockchain.grant[key][0]+=1
+        index = blockchain.add_transaction(json['sender'],blockchain.grant[key][0], json['data'])
+    else:
+        blockchain.grant[key]=[1]
+        index = blockchain.add_transaction(json['sender'],blockchain.grant[key][0], json['data'])
+        
     response = {'message': f'This transaction will be added to Block {index}'}
     return jsonify(response), 201
 
@@ -155,6 +215,62 @@ def replace_chain():
     else:
         response = {'message': 'All good. The chain is the largest one.',
                     'actual_chain': blockchain.chain}
+    return jsonify(response), 200
+
+@app.route('/grant', methods = ['POST'])
+def grant():
+    json = request.get_json()
+    sender = json['sender']
+    doctor = json['doctor']
+    if blockchain.grant[sender].append(doctor):
+        response = {'message': f'Grant successfully processed'}
+    else:
+        response = {'message': f'Grant successfully processed'}
+    print(blockchain.grant)
+    
+    return jsonify(response), 200
+
+@app.route('/revoke', methods = ['POST'])
+def revoke():
+    json = request.get_json()
+    sender = json['sender']
+    doctor = json['doctor']
+    if doctor in blockchain.grant[sender]:
+        blockchain.grant[sender].remove(doctor)
+    response = {'message': f'Grant successfully revoked'}
+    print(blockchain.grant)
+    return jsonify(response), 200
+
+@app.route('/fetch', methods = ['POST'])
+def fetch():
+    json = request.get_json()
+    sender = json['sender']
+    doctor = json['doctor']
+    version = blockchain.grant[sender][0]
+    #print(version)
+    data = blockchain.fetch(sender, doctor, version)
+    if data =="":
+        response = {'message': f'Check for Grant'}
+    else:
+        response = {'message': f'File fetched', 'fileUrl': data}
+    return jsonify(response), 200
+
+@app.route('/fetchpatient', methods = ['POST'])
+def fetchpatient():
+    json = request.get_json()
+    sender = json['sender']
+    #version = blockchain.grant[sender][0]
+    version = blockchain.grant.get(sender)
+    if version != None:
+        data = blockchain.fetchpatient(sender, version[0])
+    else:
+        data=""
+    
+    if data =="":
+        response = {'message': f'No file to fetch'}
+    else:
+        response = {'message': f'File fetched', 'fileUrl': data}
+    print(data)
     return jsonify(response), 200
 
 app.run(host = '0.0.0.0', port = 5003)

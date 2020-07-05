@@ -45,8 +45,6 @@ app.get("/mergeFiles/:file1/:file2/:sender/:useruid", function (req, res) {
   var file2 = 'https://gateway.ipfs.io/ipfs/' + req.params.file2;
   var sender = req.params.sender;
   var useruid = req.params.useruid;
-  console.log("File 1 " +  file1);
-  console.log("File 2" +  file2);
  
   request.get(file1).pipe(fs.createWriteStream('file1.pdf'));
  request.get(file2).pipe(fs.createWriteStream('file2.pdf'));
